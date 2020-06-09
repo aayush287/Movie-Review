@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Movie Review</string>
+    <string name="search_text_hint">Search movie</string>
+    <string name="new_release_content">New Releases</string>
+    <string name="upcoming_txt">Upcoming movies</string>
+    <string name="overview_text">Overview</string>
+    <string name="poster_content_txt">Poster Image</string>
+    <string name="length_txt">Length :</string>
+    <string name="release_date_txt">Release Date:</string>
+    <string name="directed_by_text">Directed by :</string>
+    <string name="rating_total_text">/10</string>
+    <string name="more_images_txt">More Image</string>
+    <string name="cast_image_desc">Cast Image</string>
+    <string name="sim_mov_txt">Similar Movies</string>
+    <string name="backdrop_desc_txt">BackDrop content</string>
+    <string name="cast_heading_txt">Casts</string>
+    <string name="popular_movies_text">Popular Movies</string>
+    <string name="top_rated_txt">Top Rated</string>
+</resources>
