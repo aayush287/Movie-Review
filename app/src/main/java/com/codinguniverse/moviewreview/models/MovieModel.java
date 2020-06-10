@@ -1,10 +1,16 @@
 package com.codinguniverse.moviewreview.models;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.codinguniverse.moviewreview.utils.Converters;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
 
+@Entity(tableName = "fav_movie")
 public class MovieModel implements Serializable {
     @SerializedName("popularity")
     private double popularity;
@@ -14,6 +20,7 @@ public class MovieModel implements Serializable {
     private boolean video;
     @SerializedName("poster_path")
     private String posterPath;
+    @PrimaryKey
     @SerializedName("id")
     private int id;
     @SerializedName("adult")
@@ -24,6 +31,7 @@ public class MovieModel implements Serializable {
     private String originalLanguage;
     @SerializedName("original_title")
     private String originalTitle;
+    @TypeConverters(Converters.class)
     @SerializedName("genre_ids")
     private List<Integer> genreId;
     @SerializedName("title")

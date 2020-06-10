@@ -67,14 +67,15 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
             TextView name = mView.findViewById(R.id.cast_real_name);
 
             String castName;
-            if (cast.getName().length() > 21){
-                castName = cast.getName().substring(0,18)+"...";
+            if (cast.getName().length() > 18){
+                castName = cast.getName().substring(0,15)+"...";
             }else{
                 castName = cast.getName();
             }
 
             Picasso.get()
                     .load(ImagePath.movieImagePathBuilder(cast.getProfilePath()))
+                    .placeholder(R.mipmap.default_cast)
                     .into(imageView);
 
             name.setText(castName);

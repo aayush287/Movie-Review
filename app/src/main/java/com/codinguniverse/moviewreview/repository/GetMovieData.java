@@ -11,6 +11,8 @@ import com.codinguniverse.moviewreview.models.MovieCharacterResponse;
 import com.codinguniverse.moviewreview.models.MovieCharacters;
 import com.codinguniverse.moviewreview.models.MovieModel;
 import com.codinguniverse.moviewreview.models.MovieResponse;
+import com.codinguniverse.moviewreview.models.TrailerModel;
+import com.codinguniverse.moviewreview.models.TrailersResponse;
 import com.codinguniverse.moviewreview.repository.network.GetMovieDataService;
 import com.codinguniverse.moviewreview.repository.network.RetrofitInstance;
 
@@ -24,7 +26,7 @@ import static android.content.ContentValues.TAG;
 
 public class GetMovieData {
 
-    private static final String API_KEY = "80f9abf2cff2cd83ca0a3de930c9b6e6";
+    private static final String API_KEY = "ADD_YOUR_API_KEY";
 
     private static GetMovieData getMovieData;
 
@@ -144,7 +146,7 @@ public class GetMovieData {
             }
 
             @Override
-            public void onFailure(Call<MovieCharacterResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<MovieCharacterResponse> call,@NonNull Throwable t) {
 
             }
         });
@@ -186,9 +188,8 @@ public class GetMovieData {
         mGetMovieDataService.getSimilarMovies(movieId, API_KEY).enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(@NonNull Call<MovieResponse> call,@NonNull Response<MovieResponse> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful() && response.body() != null){
                     mSimilarMovies.setValue(response.body().getResults());
-                    Log.d(TAG, "onResponse: here is the response here is the response of similar movies ");
                 }
             }
 
@@ -203,6 +204,33 @@ public class GetMovieData {
             }
         });
         return mSimilarMovies;
+    }
+
+    /**
+     * Method which calls for videos of movie
+     * @param movieId for which videos are requested
+     * @return list of trailer models
+     */
+    public MutableLiveData<List<TrailerModel>> getMoviesTrailer(int movieId){
+        final MutableLiveData<List<TrailerModel>> mTrailersList = new MutableLiveData<>();
+
+        mGetMovieDataService.getMovieTrailers(movieId, API_KEY).enqueue(new Callback<TrailersResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<TrailersResponse> call,@NonNull Response<TrailersResponse> response) {
+                if (response.isSuccessful()){
+
+                    if (response.body() != null && response.body().getResults() != null){
+                        mTrailersList.setValue(response.body().getResults());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<TrailersResponse> call,@NonNull Throwable t) {
+
+            }
+        });
+        return mTrailersList;
     }
 
 }

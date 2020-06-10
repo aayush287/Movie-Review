@@ -9,4 +9,5 @@ public class ImagePath {
                 "w500" +
                 imagePath;
     }
+
 }

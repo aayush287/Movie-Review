@@ -3,6 +3,7 @@ package com.codinguniverse.moviewreview.repository.network;
 import com.codinguniverse.moviewreview.models.MoreImagesResponse;
 import com.codinguniverse.moviewreview.models.MovieCharacterResponse;
 import com.codinguniverse.moviewreview.models.MovieResponse;
+import com.codinguniverse.moviewreview.models.TrailersResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -60,6 +61,15 @@ public interface GetMovieDataService {
      */
     @GET("movie/{movie_id}/images")
     Call<MoreImagesResponse> getMoreImages(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
+
+    /**
+     * This Query gets the list of videos of given movie
+     * @param movieId of movie
+     * @param apiKey provided by TmDb
+     * @return list of videos
+     */
+    @GET("movie/{movie_id}/videos")
+    Call<TrailersResponse> getMovieTrailers(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
 
 
 }

@@ -7,15 +7,15 @@ import androidx.lifecycle.ViewModel;
 
 import com.codinguniverse.moviewreview.models.MovieModel;
 import com.codinguniverse.moviewreview.repository.GetMovieData;
+import com.codinguniverse.moviewreview.repository.database.AppDatabase;
 
 import java.util.List;
 
 public class MovieViewModel extends ViewModel {
-    private static final String TAG = "MovieViewModel";
-
     private MutableLiveData<List<MovieModel>> mMovies;
     private MutableLiveData<List<MovieModel>> mNewReleases;
     private MutableLiveData<List<MovieModel>> mTopRatedMovies;
+    private LiveData<List<MovieModel>> mFavouriteMovies;
 
     public void init(){
         if (mMovies != null && mNewReleases != null && mTopRatedMovies != null){
@@ -39,6 +39,14 @@ public class MovieViewModel extends ViewModel {
 
     }
 
+    public void initializeFavMovie(AppDatabase appDatabase){
+        if (mFavouriteMovies != null){
+            return;
+        }
+
+        mFavouriteMovies = appDatabase.movieDao().loadAllMovies();
+    }
+
     public LiveData<List<MovieModel>> getMovies(){
         return this.mMovies;
     }
@@ -49,6 +57,10 @@ public class MovieViewModel extends ViewModel {
 
     public LiveData<List<MovieModel>> getTopRated(){
         return this.mTopRatedMovies;
+    }
+
+    public LiveData<List<MovieModel>> getFavouriteMovies(){
+        return mFavouriteMovies;
     }
 }
 

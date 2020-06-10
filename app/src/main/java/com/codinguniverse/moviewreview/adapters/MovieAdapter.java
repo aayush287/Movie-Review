@@ -1,5 +1,6 @@
 package com.codinguniverse.moviewreview.adapters;
 
+import android.icu.util.LocaleData;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,12 @@ import com.codinguniverse.moviewreview.models.MovieModel;
 import com.codinguniverse.moviewreview.utils.ImagePath;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
@@ -35,7 +41,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_release_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false);
         return new MovieViewHolder(view);
     }
 
@@ -63,12 +69,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private View mView;
-        private ImagePath mImagePath;
 
     public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
-            mImagePath = new ImagePath();
 
             itemView.setOnClickListener(this);
         }
@@ -76,6 +80,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         public void bind(MovieModel movie){
             ImageView imageView = mView.findViewById(R.id.new_release_img);
             TextView title = mView.findViewById(R.id.title);
+            TextView dateText = mView.findViewById(R.id.date);
 
             String movieTitle = movie.getTitle();
 
@@ -86,8 +91,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             title.setText(movieTitle);
 
             Picasso.get()
-                    .load(mImagePath.movieImagePathBuilder(movie.getPosterPath()))
+                    .load(ImagePath.movieImagePathBuilder(movie.getPosterPath()))
                     .into(imageView);
+
+            //_________________** Converting date in month,dd yyyy format **______________________________
+            String date = "";
+            if (movie.getReleaseDate() != null && !movie.getReleaseDate().isEmpty()){
+                try {
+                    Date stringToDate = new SimpleDateFormat("yyyy-mm-dd", Locale.getDefault()).parse(movie.getReleaseDate());
+                    if (stringToDate != null){
+                        long milliseconds = stringToDate.getTime();
+                        date = DateFormat.getDateInstance(DateFormat.MEDIUM).format(milliseconds);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            //__________________________________________________________________________________________
+
+            dateText.setText(date);
 
 
         }

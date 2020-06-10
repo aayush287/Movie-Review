@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#1F2127</color>
     <color name="colorAccent">#E08B18</color>
     <color name="headingTextColor">#D41E1E1E</color>
+    <color name="heading_gradient_center">#B2F0F0F0</color>
 </resources>
