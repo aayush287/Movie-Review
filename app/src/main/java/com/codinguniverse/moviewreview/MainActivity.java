@@ -1,7 +1,6 @@
 package com.codinguniverse.moviewreview;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,8 +16,6 @@ import com.codinguniverse.moviewreview.adapters.MovieAdapter;
 import com.codinguniverse.moviewreview.models.MovieModel;
 import com.codinguniverse.moviewreview.repository.database.AppDatabase;
 import com.codinguniverse.moviewreview.viewmodels.MovieViewModel;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler{
     private MovieViewModel mMovieViewModel;
