@@ -71,5 +71,14 @@ public interface GetMovieDataService {
     @GET("movie/{movie_id}/videos")
     Call<TrailersResponse> getMovieTrailers(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
 
+    /**
+     * Gets the result from search
+     * @param apiKey provided by TmDb
+     * @param search string searched
+     * @return list of matched movies
+     */
+    @GET("search/movie")
+    Call<MovieResponse> getSearchedMovies(@Query("api_key") String apiKey, @Query("query") String search);
+
 
 }

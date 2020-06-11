@@ -261,32 +261,16 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
      */
     private void changeFavouriteStatus(){
         if (isFavourite){
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    appDatabase.movieDao().deleteMovie(movieDetail);
-                    isFavourite = false;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_outline_favorite_border_24));
-                        }
-                    });
-                }
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                appDatabase.movieDao().deleteMovie(movieDetail);
+                isFavourite = false;
+                runOnUiThread(() -> mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_outline_favorite_border_24)));
             });
         }else {
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    appDatabase.movieDao().insertMovie(movieDetail);
-                    isFavourite = true;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite_24));
-                        }
-                    });
-                }
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                appDatabase.movieDao().insertMovie(movieDetail);
+                isFavourite = true;
+                runOnUiThread(() -> mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite_24)));
             });
         }
     }

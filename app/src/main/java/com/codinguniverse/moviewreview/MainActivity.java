@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        
+
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mNewReleaseView = findViewById(R.id.new_release_list);
         mPopularView = findViewById(R.id.popular_movies_list);

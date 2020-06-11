@@ -233,4 +233,29 @@ public class GetMovieData {
         return mTrailersList;
     }
 
+    /**
+     * gets the list of movie by search key
+     * @param searchKey search key
+     * @return list of movie matched
+     */
+    public MutableLiveData<List<MovieModel>> getMoviesBySearch(String searchKey){
+        final MutableLiveData<List<MovieModel>> mMovieList = new MutableLiveData<>();
+
+        mGetMovieDataService.getSearchedMovies(API_KEY, searchKey).enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<MovieResponse> call,@NonNull Response<MovieResponse> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    mMovieList.setValue(response.body().getResults());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MovieResponse> call,@NonNull Throwable t) {
+
+            }
+        });
+
+        return mMovieList;
+    }
+
 }

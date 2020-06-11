@@ -21,5 +21,6 @@
     <string name="fav_movie_text">Favorite Movies</string>
     <string name="search_txt">Search</string>
     <string name="title_activity_search">SearchActivity</string>
-    <string name="saerchable_hint">Enter Movie Name</string>
+    <string name="searchable_hint">Enter Movie Name</string>
+    <string name="no_movies_txt">No Movies Found</string>
 </resources>
