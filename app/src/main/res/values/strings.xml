@@ -15,7 +15,7 @@
     <string name="backdrop_desc_txt">BackDrop content</string>
     <string name="cast_heading_txt">Casts</string>
     <string name="popular_movies_text">Popular Movies</string>
-    <string name="top_rated_txt">Top Rated</string>
+    <string name="top_rated_txt">Top Rated Movies</string>
     <string name="trailers_heading_txt">Trailers</string>
     <string name="trailer_img_desc">Trailer  Images Description</string>
     <string name="fav_movie_text">Favorite Movies</string>

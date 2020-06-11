@@ -17,6 +17,7 @@ import com.codinguniverse.moviewreview.models.MovieModel;
 import com.codinguniverse.moviewreview.repository.database.AppDatabase;
 import com.codinguniverse.moviewreview.viewmodels.MovieViewModel;
 
+
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler{
     private MovieViewModel mMovieViewModel;
     private MovieAdapter mNewReleaseAdapter;
