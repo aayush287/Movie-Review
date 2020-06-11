@@ -77,13 +77,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
     }
     //________________** Setting all views i.e. New release, popular, top rated, fav**_____________
     private void setNewReleases(){
-        mMovieViewModel.getNewReleases().observe(this, new Observer<List<MovieModel>>() {
-            @Override
-            public void onChanged(List<MovieModel> movieModels) {
-                mNewReleaseAdapter.setMovieList(movieModels);
-                UP_COMING_FLAG = true;
-                hideProgressBar();
+        mMovieViewModel.getNewReleases().observe(this, movieModels -> {
+            if(movieModels == null || movieModels.size() == 0){
+                TextView newReleaseTitle = findViewById(R.id.new_release);
+                newReleaseTitle.setVisibility(View.GONE);
             }
+            mNewReleaseAdapter.setMovieList(movieModels);
+            UP_COMING_FLAG = true;
+            hideProgressBar();
         });
 
         LinearLayoutManager linearLayout  = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
@@ -92,14 +93,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
     }
 
     private void setPopularView(){
-        mMovieViewModel.getMovies().observe(this, new Observer<List<MovieModel>>() {
-            @Override
-            public void onChanged(List<MovieModel> movieModels) {
-                mPopularMoviesAdapter.setMovieList(movieModels);
+        mMovieViewModel.getMovies().observe(this, movieModels -> {
 
-                POPULAR_FLAG = true;
-                hideProgressBar();
+            if(movieModels == null || movieModels.size() == 0){
+                TextView popularTitle = findViewById(R.id.popular_movies);
+                popularTitle.setVisibility(View.GONE);
             }
+            mPopularMoviesAdapter.setMovieList(movieModels);
+
+            POPULAR_FLAG = true;
+            hideProgressBar();
         });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         mPopularView.setAdapter(mPopularMoviesAdapter);
@@ -108,14 +111,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
     }
 
     private void setTopRatedView(){
-        mMovieViewModel.getTopRated().observe(this, new Observer<List<MovieModel>>() {
-            @Override
-            public void onChanged(List<MovieModel> movieModels) {
-                mTopRatedAdapter.setMovieList(movieModels);
-
-                TOP_RATED_FLAG = true;
-                hideProgressBar();
+        mMovieViewModel.getTopRated().observe(this, movieModels -> {
+            if(movieModels == null || movieModels.size() == 0){
+                TextView topRatedTitle = findViewById(R.id.top_rated_title);
+                topRatedTitle.setVisibility(View.GONE);
             }
+            mTopRatedAdapter.setMovieList(movieModels);
+
+            TOP_RATED_FLAG = true;
+            hideProgressBar();
         });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
