@@ -26,7 +26,7 @@ import static android.content.ContentValues.TAG;
 
 public class GetMovieData {
 
-    private static final String API_KEY = "ADD_YOUR_API_KEY";
+    private static final String API_KEY = "80f9abf2cff2cd83ca0a3de930c9b6e6";
 
     private static GetMovieData getMovieData;
 

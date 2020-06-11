@@ -19,4 +19,7 @@
     <string name="trailers_heading_txt">Trailers</string>
     <string name="trailer_img_desc">Trailer  Images Description</string>
     <string name="fav_movie_text">Favorite Movies</string>
+    <string name="search_txt">Search</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="saerchable_hint">Enter Movie Name</string>
 </resources>

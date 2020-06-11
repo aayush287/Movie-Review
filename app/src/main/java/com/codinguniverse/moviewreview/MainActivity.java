@@ -1,12 +1,17 @@
 package com.codinguniverse.moviewreview;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -19,6 +24,9 @@ import com.codinguniverse.moviewreview.viewmodels.MovieViewModel;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler{
+
+    private static final String TAG = "MainActivity";
+    
     private MovieViewModel mMovieViewModel;
     private MovieAdapter mNewReleaseAdapter;
     private MovieAdapter mPopularMoviesAdapter;
@@ -42,6 +50,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // setting toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+        
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mNewReleaseView = findViewById(R.id.new_release_list);
         mPopularView = findViewById(R.id.popular_movies_list);
@@ -80,11 +95,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
                 TextView newReleaseTitle = findViewById(R.id.new_release);
                 newReleaseTitle.setVisibility(View.GONE);
             }
+            Log.d(TAG, "setNewReleases: here we are");
             mNewReleaseAdapter.setMovieList(movieModels);
             UP_COMING_FLAG = true;
             hideProgressBar();
         });
-
+        
+        
         LinearLayoutManager linearLayout  = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         mNewReleaseView.setLayoutManager(linearLayout);
         mNewReleaseView.setAdapter(mNewReleaseAdapter);
@@ -99,6 +116,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
             }
             mPopularMoviesAdapter.setMovieList(movieModels);
 
+            Log.d(TAG, "setPopularView: here we are");
+            
             POPULAR_FLAG = true;
             hideProgressBar();
         });
@@ -115,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
                 topRatedTitle.setVisibility(View.GONE);
             }
             mTopRatedAdapter.setMovieList(movieModels);
-
+            Log.d(TAG, "setTopRatedView: here we are");
             TOP_RATED_FLAG = true;
             hideProgressBar();
         });
@@ -142,6 +161,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         mFavoriteView.setLayoutManager(linearLayoutManager);
     }
     //__________________________________** Ending of views setup**__________________________________
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_search){
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     // __________________** Show and Hide method for progress bar for loading data **_______________
 
