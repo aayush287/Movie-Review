@@ -33,17 +33,21 @@ public class MovieWidgetListProvider implements RemoteViewsService.RemoteViewsFa
     public void onCreate() {
         mAppDatabase = AppDatabase.getInstance(mContext);
         favMovieList = new ArrayList<>();
-        updateFavList();
 
     }
 
+    /**
+     * This method will retrieve list of all favorite movies.
+     * The main trick is it will make sync calls because this method
+     * will be called from onDataSetChanged and this method will not
+     * run on main UI thread whereas onCreate method will run on
+     * main UI thread
+     */
     private void updateFavList(){
 
         final long identityToken = Binder.clearCallingIdentity();
-        AppExecutors.getInstance().diskIO().execute(() -> {
-           favMovieList =  mAppDatabase.movieDao().loadAllMoviesForWidget();
-            Log.d(TAG, "updateFavList: size "+favMovieList.size());
-        });
+        favMovieList =  mAppDatabase.movieDao().loadAllMoviesForWidget();
+
 
         Binder.restoreCallingIdentity(identityToken);
     }

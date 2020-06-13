@@ -7,9 +7,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,12 +22,15 @@ import com.codinguniverse.moviewreview.adapters.MovieAdapter;
 import com.codinguniverse.moviewreview.models.MovieModel;
 import com.codinguniverse.moviewreview.repository.database.AppDatabase;
 import com.codinguniverse.moviewreview.viewmodels.MovieViewModel;
+import com.codinguniverse.moviewreview.widgets.MovieReviewWidget;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler{
 
-    private static final String TAG = "MainActivity";
-    
     private MovieViewModel mMovieViewModel;
     private MovieAdapter mNewReleaseAdapter;
     private MovieAdapter mPopularMoviesAdapter;
@@ -38,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
     private RecyclerView mFavoriteView;
     private ScrollView mMainView;
     private ProgressBar mProgressBar;
+    private AdView mBannerAd;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     // Boolean to check if all data is there or not
     private static boolean UP_COMING_FLAG =  false;
@@ -56,6 +63,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+        //getting instance of fire
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        // Initializing the Mobile ad
+        MobileAds.initialize(this, initializationStatus -> {
+        });
+
 
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mNewReleaseView = findViewById(R.id.new_release_list);
@@ -64,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         mProgressBar = findViewById(R.id.pb_loading_bar);
         mMainView = findViewById(R.id.main_scroll_view);
         mFavoriteView = findViewById(R.id.favorite_movies_list);
+        mBannerAd = findViewById(R.id.banner_ad);
 
         AppDatabase appDatabase = AppDatabase.getInstance(this);
 
@@ -72,11 +87,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         mTopRatedAdapter = new MovieAdapter(this);
         mFavoriteAdapter = new MovieAdapter(this);
 
+        // Adding ads;
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mBannerAd.loadAd(adRequest);
+
 
         mMovieViewModel.init();
         mMovieViewModel.initializeFavMovie(appDatabase);
 
         showProgressBar();
+
+        fireBaseLogs("2", "App started");
 
         /*
             Setting all the views
@@ -95,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
                 TextView newReleaseTitle = findViewById(R.id.new_release);
                 newReleaseTitle.setVisibility(View.GONE);
             }
-            Log.d(TAG, "setNewReleases: here we are");
             mNewReleaseAdapter.setMovieList(movieModels);
             UP_COMING_FLAG = true;
             hideProgressBar();
@@ -116,8 +136,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
             }
             mPopularMoviesAdapter.setMovieList(movieModels);
 
-            Log.d(TAG, "setPopularView: here we are");
-            
+
             POPULAR_FLAG = true;
             hideProgressBar();
         });
@@ -134,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
                 topRatedTitle.setVisibility(View.GONE);
             }
             mTopRatedAdapter.setMovieList(movieModels);
-            Log.d(TAG, "setTopRatedView: here we are");
             TOP_RATED_FLAG = true;
             hideProgressBar();
         });
@@ -151,6 +169,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
                 TextView favMovieTitle = findViewById(R.id.favorite_movies);
                 favMovieTitle.setVisibility(View.GONE);
             }
+
+            updateWidgets();
             FAVORITE_FLAG = true;
             hideProgressBar();
             mFavoriteAdapter.setMovieList(movieModels);
@@ -193,22 +213,48 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
 
             mMainView.setVisibility(View.VISIBLE);
 
+            mBannerAd.setVisibility(View.VISIBLE);
+
         }
     }
 
     private void showProgressBar(){
         mProgressBar.setVisibility(View.VISIBLE);
         mMainView.setVisibility(View.INVISIBLE);
+        mBannerAd.setVisibility(View.INVISIBLE);
     }
 
     // _____________________** End of progress bar methods **_______________________________________
 
+    /**
+     * method to log events of app
+     * @param id id of item
+     * @param log string
+     */
+    private void fireBaseLogs(String id, String log){
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, log);
+
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    }
+
     @Override
     public void onMovieClick(MovieModel movie) {
+        fireBaseLogs("1", movie.getTitle() + " clicked");
         Intent movieDetail = new Intent(this, MovieActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(MovieActivity.EXTRA_MOVIE,movie);
         movieDetail.putExtras(bundle);
         startActivity(movieDetail);
+    }
+
+    private void updateWidgets(){
+        ComponentName componentName = new ComponentName(this, MovieReviewWidget.class);
+        int[] ids = AppWidgetManager.getInstance(this).getAppWidgetIds(componentName);
+        Intent intent = new Intent(this, MovieReviewWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(intent);
     }
 }

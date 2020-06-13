@@ -4,12 +4,10 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.codinguniverse.moviewreview.R;
 
-import static android.content.ContentValues.TAG;
 
 /**
  * Implementation of App Widget functionality.
@@ -30,7 +28,7 @@ public class MovieReviewWidget extends AppWidgetProvider {
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_view);
             appWidgetManager.updateAppWidget(appWidgetId, widget);
         }
-
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
 }

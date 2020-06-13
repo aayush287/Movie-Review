@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,8 +26,11 @@ import com.codinguniverse.moviewreview.repository.database.AppDatabase;
 import com.codinguniverse.moviewreview.utils.AppExecutors;
 import com.codinguniverse.moviewreview.utils.GenreList;
 import com.codinguniverse.moviewreview.utils.ImagePath;
+import com.codinguniverse.moviewreview.utils.YouTubePath;
 import com.codinguniverse.moviewreview.viewmodels.MovieDetails;
+import com.codinguniverse.moviewreview.widgets.MovieReviewWidget;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -38,7 +43,6 @@ import java.util.Objects;
 
 public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler, TrailerAdapter.TrailerClickHandler {
 
-    private static final String TAG = "MovieActivity";
 
     // Constants
     public static final String EXTRA_MOVIE = "movie";
@@ -63,7 +67,9 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
     private MoreImagesAdapter mMoreImagesAdapter;
     private MovieAdapter mSimilarMoviesAdapter;
     private TrailerAdapter mTrailerAdapter;
+
     private AppDatabase appDatabase;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     //flags
     private boolean isFavourite = false;
@@ -81,6 +87,8 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         movieDetailViewModel = ViewModelProviders.of(this).get(MovieDetails.class);
         // getting database instance
         appDatabase = AppDatabase.getInstance(this);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
 
         movieDetailViewModel.init(movieDetail.getId());
@@ -173,12 +181,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         setSimilarMovies();
         setTrailersView();
 
-        mFavoriteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeFavouriteStatus();
-            }
-        });
+        mFavoriteBtn.setOnClickListener(v -> changeFavouriteStatus());
 
 
     }
@@ -263,12 +266,16 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         if (isFavourite){
             AppExecutors.getInstance().diskIO().execute(() -> {
                 appDatabase.movieDao().deleteMovie(movieDetail);
+                fireBaseLogs("3", movieDetail.getTitle() + " removed to favorite");
+                updateWidgets();
                 isFavourite = false;
                 runOnUiThread(() -> mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_outline_favorite_border_24)));
             });
         }else {
             AppExecutors.getInstance().diskIO().execute(() -> {
                 appDatabase.movieDao().insertMovie(movieDetail);
+                fireBaseLogs("4", movieDetail.getTitle() + " added to favorite");
+                updateWidgets();
                 isFavourite = true;
                 runOnUiThread(() -> mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite_24)));
             });
@@ -286,13 +293,35 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
 
     @Override
     public void onTrailerClickHandle(String videoId) {
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoId));
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(YouTubePath.buildAppVideoPath(videoId)));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.youtube.com/watch?v=" + videoId));
+                Uri.parse(YouTubePath.buildVideoPath(videoId)));
         try {
             this.startActivity(appIntent);
         } catch (ActivityNotFoundException ex) {
             this.startActivity(webIntent);
         }
+    }
+
+    /**
+     * method to log events of app
+     * @param id id of item
+     * @param log string
+     */
+    private void fireBaseLogs(String id, String log){
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, log);
+
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    }
+
+    private void updateWidgets(){
+        ComponentName componentName = new ComponentName(this, MovieReviewWidget.class);
+        int[] ids = AppWidgetManager.getInstance(this).getAppWidgetIds(componentName);
+        Intent intent = new Intent(this, MovieReviewWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(intent);
     }
 }
