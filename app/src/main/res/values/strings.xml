@@ -1,13 +1,10 @@
 <resources>
     <string name="app_name">Movie Review</string>
-    <string name="search_text_hint">Search movie</string>
     <string name="new_release_content">New Releases</string>
     <string name="upcoming_txt">Upcoming movies</string>
     <string name="overview_text">Overview</string>
     <string name="poster_content_txt">Poster Image</string>
-    <string name="length_txt">Length :</string>
     <string name="release_date_txt">Release Date:</string>
-    <string name="directed_by_text">Directed by :</string>
     <string name="rating_total_text">/10</string>
     <string name="more_images_txt">More Images</string>
     <string name="cast_image_desc">Cast Images</string>
@@ -20,10 +17,8 @@
     <string name="trailer_img_desc">Trailer  Images Description</string>
     <string name="fav_movie_text">Favorite Movies</string>
     <string name="search_txt">Search</string>
-    <string name="title_activity_search">SearchActivity</string>
     <string name="searchable_hint">Enter Movie Name</string>
     <string name="no_movies_txt">No Movies Found</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
     <string name="string_with_no_favourite_movie">No Favorite Movies</string>
+    <string name="share_btn_txt">Share</string>
 </resources>

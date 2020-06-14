@@ -1,6 +1,5 @@
 package com.codinguniverse.moviewreview.adapters;
 
-import android.icu.util.LocaleData;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

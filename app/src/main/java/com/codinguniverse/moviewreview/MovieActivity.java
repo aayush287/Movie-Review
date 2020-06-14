@@ -1,6 +1,8 @@
 package com.codinguniverse.moviewreview;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ShareCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +15,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -67,6 +70,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
     private MoreImagesAdapter mMoreImagesAdapter;
     private MovieAdapter mSimilarMoviesAdapter;
     private TrailerAdapter mTrailerAdapter;
+    private Button mShareButton;
 
     private AppDatabase appDatabase;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -80,6 +84,13 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
+
+        Toolbar toolbar = findViewById(R.id.detail_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         movieDetail = (MovieModel) Objects.requireNonNull(getIntent().getExtras()).getSerializable(EXTRA_MOVIE);
 
@@ -107,6 +118,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         similarMovies = findViewById(R.id.sim_movie_view);
         mTrailersView = findViewById(R.id.trailers_view);
         mFavoriteBtn = findViewById(R.id.favorite_btn);
+        mShareButton = findViewById(R.id.share_btn);
 
 
         mCastAdapter = new CastAdapter();
@@ -182,6 +194,13 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         setTrailersView();
 
         mFavoriteBtn.setOnClickListener(v -> changeFavouriteStatus());
+        mShareButton.setOnClickListener(v -> {
+            startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(this)
+                    .setType("text/plain")
+                    .setText("Watch "+movieDetail.getTitle()+" with me.\n #MovieReviewApp")
+                    .getIntent(), getString(R.string.share_btn_txt)));
+            fireBaseLogs("5", movieDetail.getTitle() + " share");
+        });
 
 
     }

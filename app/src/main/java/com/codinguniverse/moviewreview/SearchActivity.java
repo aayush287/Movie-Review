@@ -6,7 +6,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +16,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,27 +28,42 @@ import com.codinguniverse.moviewreview.repository.GetMovieData;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler {
-
-    private SearchView mSearchView;
-    private GetMovieData mGetMovieData;
-    private RecyclerView mSearchedMovies;
-    private MovieAdapter mSearchedAdapter;
+    private static final String TAG = "SearchActivity";
+    
+    //Constants 
     private static final int PORTRAIT_MODE_SPAN = 2;
     private static final int LANDSCAPE_MODE_SPAN = 4;
+    private static final String EXTRA_SEARCH_QUERY = "search_query";
+    
+    private SearchView mSearchView;
+    private GetMovieData mGetMovieData;
+    private MovieAdapter mSearchedAdapter;
     private LifecycleOwner mLifecycleOwner;
     private ProgressBar mProgressBar;
     private TextView noMovieFoundText;
+
+    private String mSearchQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        // setting toolbar
+        Toolbar toolbar = findViewById(R.id.search_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+
+
         mLifecycleOwner = this;
 
         mGetMovieData = GetMovieData.getInstance();
 
-        mSearchedMovies = findViewById(R.id.searched_movies);
+        RecyclerView searchedMovies = findViewById(R.id.searched_movies);
         mProgressBar = findViewById(R.id.search_pb_indicator);
         noMovieFoundText = findViewById(R.id.no_movies_view);
 
@@ -60,11 +75,19 @@ public class SearchActivity extends AppCompatActivity implements MovieAdapter.On
             gridLayoutManager = new GridLayoutManager(this, LANDSCAPE_MODE_SPAN);
         }
 
-        mSearchedMovies.setLayoutManager(gridLayoutManager);
-        mSearchedMovies.setAdapter(mSearchedAdapter);
+        searchedMovies.setLayoutManager(gridLayoutManager);
+        searchedMovies.setAdapter(mSearchedAdapter);
+
+        if (savedInstanceState != null){
+            mSearchQuery = savedInstanceState.getString(EXTRA_SEARCH_QUERY);
+            SearchMovie searchMovieAfterRotation = new SearchMovie();
+            if (!mSearchQuery.isEmpty()){
+                searchMovieAfterRotation.execute(mSearchQuery);
+            }
+        }
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        mSearchView = (SearchView) findViewById(R.id.search_view);
+        mSearchView = findViewById(R.id.search_view);
         SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
 
         mSearchView.setSearchableInfo(searchableInfo);
@@ -89,6 +112,13 @@ public class SearchActivity extends AppCompatActivity implements MovieAdapter.On
 
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mSearchQuery = mSearchView.getQuery().toString();
+        outState.putString(EXTRA_SEARCH_QUERY, mSearchQuery);
+
+    }
 
     class SearchMovie extends AsyncTask<String, Void, LiveData<List<MovieModel>>>{
         @Override
@@ -101,17 +131,18 @@ public class SearchActivity extends AppCompatActivity implements MovieAdapter.On
         @Override
         protected LiveData<List<MovieModel>> doInBackground(String... strings) {
             String search = strings[0];
-
+            
             return mGetMovieData.getMoviesBySearch(search);
         }
 
         @Override
         protected void onPostExecute(LiveData<List<MovieModel>> movieModels) {
             super.onPostExecute(movieModels);
-            movieModels.observe(mLifecycleOwner, (Observer<List<MovieModel>>) movieModels1 -> {
+            movieModels.observe(mLifecycleOwner, movieModels1 -> {
                 if (movieModels1 == null || movieModels1.size() == 0){
                     noMovieFoundText.setVisibility(View.VISIBLE);
                 }
+                Log.d(TAG, "onPostExecute: here we are" + movieModels1.size());
                 mProgressBar.setVisibility(View.INVISIBLE);
                 mSearchedAdapter.setMovieList(movieModels1);
             });

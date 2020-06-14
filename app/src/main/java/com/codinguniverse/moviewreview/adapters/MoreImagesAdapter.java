@@ -46,7 +46,7 @@ public class MoreImagesAdapter extends RecyclerView.Adapter<MoreImagesAdapter.Mo
         notifyDataSetChanged();
     }
 
-    class MoreImageViewHolder extends RecyclerView.ViewHolder{
+    static class MoreImageViewHolder extends RecyclerView.ViewHolder{
         private ImageView moreImages;
         public MoreImageViewHolder(@NonNull View itemView) {
             super(itemView);

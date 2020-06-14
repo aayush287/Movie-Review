@@ -20,8 +20,7 @@ public class Converters implements Serializable {
         Gson gson = new Gson();
         Type type = new TypeToken<List<Integer>>(){}.getType();
 
-        String json = gson.toJson(genreList, type);
-        return json;
+        return gson.toJson(genreList, type);
     }
 
     @TypeConverter
@@ -33,7 +32,6 @@ public class Converters implements Serializable {
         Gson gson = new Gson();
         Type type = new TypeToken<List<Integer>>(){}.getType();
 
-        List<Integer> genre = gson.fromJson(genreString, type);
-        return genre;
+        return gson.fromJson(genreString, type);
     }
 }

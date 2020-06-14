@@ -43,6 +43,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
     private ScrollView mMainView;
     private ProgressBar mProgressBar;
     private AdView mBannerAd;
+    private TextView favMovieTitle;
+    private TextView popularTitle;
+    private TextView newReleaseTitle;
+    private TextView topRatedTitle;
+
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -79,6 +84,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         mMainView = findViewById(R.id.main_scroll_view);
         mFavoriteView = findViewById(R.id.favorite_movies_list);
         mBannerAd = findViewById(R.id.banner_ad);
+        newReleaseTitle = findViewById(R.id.new_release);
+        popularTitle = findViewById(R.id.popular_movies);
+        topRatedTitle = findViewById(R.id.top_rated_title);
+        favMovieTitle = findViewById(R.id.favorite_movies);
 
         AppDatabase appDatabase = AppDatabase.getInstance(this);
 
@@ -113,8 +122,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
     private void setNewReleases(){
         mMovieViewModel.getNewReleases().observe(this, movieModels -> {
             if(movieModels == null || movieModels.size() == 0){
-                TextView newReleaseTitle = findViewById(R.id.new_release);
                 newReleaseTitle.setVisibility(View.GONE);
+            }else {
+                newReleaseTitle.setVisibility(View.VISIBLE);
             }
             mNewReleaseAdapter.setMovieList(movieModels);
             UP_COMING_FLAG = true;
@@ -131,8 +141,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         mMovieViewModel.getMovies().observe(this, movieModels -> {
 
             if(movieModels == null || movieModels.size() == 0){
-                TextView popularTitle = findViewById(R.id.popular_movies);
                 popularTitle.setVisibility(View.GONE);
+            }else {
+                popularTitle.setVisibility(View.VISIBLE);
             }
             mPopularMoviesAdapter.setMovieList(movieModels);
 
@@ -149,8 +160,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
     private void setTopRatedView(){
         mMovieViewModel.getTopRated().observe(this, movieModels -> {
             if(movieModels == null || movieModels.size() == 0){
-                TextView topRatedTitle = findViewById(R.id.top_rated_title);
                 topRatedTitle.setVisibility(View.GONE);
+            }else {
+                topRatedTitle.setVisibility(View.VISIBLE);
             }
             mTopRatedAdapter.setMovieList(movieModels);
             TOP_RATED_FLAG = true;
@@ -166,8 +178,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
     private void setFavoriteMovies(){
         mMovieViewModel.getFavouriteMovies().observe(this, movieModels -> {
             if (movieModels == null || movieModels.size() == 0){
-                TextView favMovieTitle = findViewById(R.id.favorite_movies);
                 favMovieTitle.setVisibility(View.GONE);
+            }else {
+                favMovieTitle.setVisibility(View.VISIBLE);
             }
 
             updateWidgets();
