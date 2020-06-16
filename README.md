@@ -1,22 +1,22 @@
 # Movie-Review
 ##  Project Overview
-Movie Review app allows users to check popular movies, Upcoming movies, or Top Rated moves. It shows ratings, Poster, Cast, Similar Movies,<br>
-Trailers, etc. App provides the user to mark their favorite movie and share movies with their friends.<br>
+Movie Review app allows users to check popular movies, Upcoming movies, or Top Rated moves. It shows ratings, Poster, Cast, Similar Movies,
+Trailers, etc. App provides the user to mark their favorite movie and share movies with their friends.
 The Movie Review app completely is written in Java. It uses TmDb API to request movie Data.
 
 
 ## Why this Project?
 
 To become an Android developer, you must know how to bring particular mobile experiences to life.
-Specifically, you need to know how to build clean and compelling user interfaces (UIs), fetch data from network services, and optimize the<br>
+Specifically, you need to know how to build clean and compelling user interfaces (UIs), fetch data from network services, and optimize the
 experience for various mobile devices. You will hone these fundamental skills in this project.
 
 
-By building this app, you will demonstrate your understanding of the foundational elements of programming for Android. Your app will<br>
+By building this app, you will demonstrate your understanding of the foundational elements of programming for Android. Your app will
 communicate with the Internet and provide a responsive and delightful user experience.
 
 ## Intended User
-The app specifically targets users who are very busy in their life and has no idea what is going on in the entertainment world.<br>
+The app specifically targets users who are very busy in their life and has no idea what is going on in the entertainment world.
 This app allows them to take a quick sneak of top movies or upcoming movies and mark their favorite movies as a favorite.
 
 ### Instructions
