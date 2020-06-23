@@ -142,7 +142,6 @@ public class SearchActivity extends AppCompatActivity implements MovieAdapter.On
                 if (movieModels1 == null || movieModels1.size() == 0){
                     noMovieFoundText.setVisibility(View.VISIBLE);
                 }
-                Log.d(TAG, "onPostExecute: here we are" + movieModels1.size());
                 mProgressBar.setVisibility(View.INVISIBLE);
                 mSearchedAdapter.setMovieList(movieModels1);
             });

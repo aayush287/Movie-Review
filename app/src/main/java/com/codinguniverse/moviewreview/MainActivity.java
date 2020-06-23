@@ -11,6 +11,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler{
+    private static final String TAG = "MainActivity";
 
     private MovieViewModel mMovieViewModel;
     private MovieAdapter mNewReleaseAdapter;

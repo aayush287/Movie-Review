@@ -53,5 +53,5 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111"/>
+            ads:adUnitId="ca-app-pub-3169980754156809/1023828204"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -32,6 +32,8 @@ import com.codinguniverse.moviewreview.utils.ImagePath;
 import com.codinguniverse.moviewreview.utils.YouTubePath;
 import com.codinguniverse.moviewreview.viewmodels.MovieDetails;
 import com.codinguniverse.moviewreview.widgets.MovieReviewWidget;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
@@ -74,6 +76,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
 
     private AppDatabase appDatabase;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private InterstitialAd mInterstitialAd;
 
     //flags
     private boolean isFavourite = false;
@@ -119,6 +122,10 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         mTrailersView = findViewById(R.id.trailers_view);
         mFavoriteBtn = findViewById(R.id.favorite_btn);
         mShareButton = findViewById(R.id.share_btn);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3169980754156809/5467374205");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 
         mCastAdapter = new CastAdapter();
@@ -303,6 +310,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
 
     @Override
     public void onMovieClick(MovieModel movie) {
+        mInterstitialAd.show();
         Intent movieDetail = new Intent(this, MovieActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(MovieActivity.EXTRA_MOVIE, movie);
