@@ -124,7 +124,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         mShareButton = findViewById(R.id.share_btn);
 
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3169980754156809/5467374205");
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 
