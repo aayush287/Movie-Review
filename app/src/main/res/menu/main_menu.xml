@@ -8,4 +8,10 @@
         android:icon="@drawable/ic_baseline_search_24"
         app:showAsAction="always"
         />
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/about_text" />
+    <item
+        android:id="@+id/action_twitter"
+        android:title="@string/twitter_txt" />
 </menu>

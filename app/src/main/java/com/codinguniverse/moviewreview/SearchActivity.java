@@ -156,4 +156,10 @@ public class SearchActivity extends AppCompatActivity implements MovieAdapter.On
         movieDetail.putExtras(bundle);
         startActivity(movieDetail);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
 }

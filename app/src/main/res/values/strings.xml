@@ -21,4 +21,11 @@
     <string name="no_movies_txt">No Movies Found</string>
     <string name="string_with_no_favourite_movie">No Favorite Movies</string>
     <string name="share_btn_txt">Share</string>
+    <string name="about_text">About</string>
+    <string name="about_copyright">Copyright \u00a9 2020 Aayush Chaudhary</string>
+    <string name="about_email">For support, email aayushchaudhary@gmail.com</string>
+    <string name="about_credits">Icon derived from <b>FlatIcon</b> at flaticon.com by <b>Freepik</b></string>
+    <string name="twitter_txt"> Twitter Handle</string>
+    <string name="ok">OK</string>
+    <string name="twitter_username">caayush36</string>
 </resources>

@@ -316,6 +316,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         bundle.putSerializable(MovieActivity.EXTRA_MOVIE, movie);
         movieDetail.putExtras(bundle);
         startActivity(movieDetail);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
     @Override
@@ -350,5 +351,11 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         sendBroadcast(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 }

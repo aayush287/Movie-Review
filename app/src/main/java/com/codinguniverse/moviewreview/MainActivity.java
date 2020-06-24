@@ -1,6 +1,7 @@
 package com.codinguniverse.moviewreview;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
@@ -10,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +32,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler{
-    private static final String TAG = "MainActivity";
 
     private MovieViewModel mMovieViewModel;
     private MovieAdapter mNewReleaseAdapter;
@@ -49,6 +49,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
     private TextView popularTitle;
     private TextView newReleaseTitle;
     private TextView topRatedTitle;
+
+    /*
+        module scope because we need to dismiss it in onStop
+        e.g. when orientation changes to avoid memory leaks.
+    */
+    private AlertDialog mDialog = null;
 
 
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -205,12 +211,55 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_search){
-            Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
-            return true;
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_search:
+                Intent intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_about:
+                showAbout();
+                return true;
+            case R.id.action_twitter:
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name="+getString(R.string.twitter_username))));
+                }catch (Exception e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/"+getString(R.string.twitter_username))));
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+
+    }
+
+    /**
+     * This method shows the about dialog of the app
+     */
+    private void showAbout() {
+        View messageView = getLayoutInflater().inflate(R.layout.about,null, false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(R.mipmap.ic_launcher);
+
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            if ((mDialog != null) && (mDialog.isShowing())){
+                mDialog.dismiss();
+            }
+        });
+
+        builder.setView(messageView);
+
+        mDialog = builder.create();
+        mDialog.setCanceledOnTouchOutside(true);
+
+
+        TextView tv = messageView.findViewById(R.id.about_version);
+        String versionText = "v" + BuildConfig.VERSION_NAME;
+        tv.setText(versionText);
+
+        mDialog.show();
     }
 
     // __________________** Show and Hide method for progress bar for loading data **_______________
@@ -262,6 +311,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         bundle.putSerializable(MovieActivity.EXTRA_MOVIE,movie);
         movieDetail.putExtras(bundle);
         startActivity(movieDetail);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
     private void updateWidgets(){
