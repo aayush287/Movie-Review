@@ -23,3 +23,6 @@ This app allows them to take a quick sneak of top movies or upcoming movies and 
 To install this project clone the repository and add your TmDb API in file `app/src/main/java/com/codinguniverse/movie/repository/GetMovieData.java` <br>
 to variable __API_KEY__
 And add your `google-services.json` for Firebase Analytics.
+
+### Google Play Link
+https://play.google.com/store/apps/details?id=com.codinguniverse.moviewreview
