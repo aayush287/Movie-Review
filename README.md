@@ -8,6 +8,7 @@
    </p>
  </p>  
 
+|![Screenshot1](https://github.com/aayush287/Movie-Review/blob/master/Screenshot/1-6%20inch%20-%20Nexus%206-screen__1.jpg)|![Screenshot2](https://github.com/aayush287/Movie-Review/blob/master/Screenshot/2-6%20inch%20-%20Nexus%206-screen__2.jpg)|![Screenshot3](https://github.com/aayush287/Movie-Review/blob/master/Screenshot/3-6%20inch%20-%20Nexus%206-screen__3.jpg)|
 
 
 ##  Project Overview
