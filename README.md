@@ -1,7 +1,12 @@
 <p align="center">
    <a href="#">
-    <img src="https://github.com/aayush287/Movie-Review/blob/master/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" alt="Logo" width="120" height="120">
+    <img src="https://github.com/aayush287/Movie-Review/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="Logo" width="120" height="120">
   </a>
+   <h3 align="center">Movie Review for Android</h3>
+    <p align="center">
+    Check top rated movies, popular movies and upcoming movies. Watch trailers, cast or similar movies of your favorite movies.
+   </p>
+ </p>  
 
 
 
@@ -29,9 +34,12 @@ To install this project clone the repository and add your TmDb API in file `app/
 to variable __API_KEY__
 And add your `google-services.json` for Firebase Analytics.
 
-### Google Play Link
-https://play.google.com/store/apps/details?id=com.codinguniverse.moviewreview
+## Download from here:
 
+<a href='https://play.google.com/store/apps/details?id=com.codinguniverse.moviewreview' target='_blank'>
+    <img height='150' style='border:0px;height:150px;' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' border='0' alt='Download from Playstore' />   </a>
+  
+<h4>You can also access all the releases from <a href="https://github.com/aayush287/Movie-Review/releases">Releases tab</a></h3>
 
 ### MIT Licenses
 Copyright (c) 2020 Aayush Chaudhrary
