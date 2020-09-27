@@ -8,7 +8,7 @@
    </p>
  </p>
  <a href="#">
-    <img src="https://github.com/aayush287/Movie-Review/blob/master/Screenshot/1-6%20inch%20-%20Nexus%206-screen__1.jpg?raw=true" alt="Logo" width="720" height="1080">
+    <img src="https://github.com/aayush287/Movie-Review/blob/master/Screenshot/1-6%20inch%20-%20Nexus%206-screen__1.jpg?raw=true" alt="Logo" width="480" height="720">
   </a>
 
 
