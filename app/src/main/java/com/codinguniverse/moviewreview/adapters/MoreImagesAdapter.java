@@ -35,7 +35,7 @@ public class MoreImagesAdapter extends RecyclerView.Adapter<MoreImagesAdapter.Mo
 
     @Override
     public int getItemCount() {
-        if (mMoreImagesModels == null){
+        if (mMoreImagesModels == null) {
             return 0;
         }
         return mMoreImagesModels.size();
@@ -46,15 +46,16 @@ public class MoreImagesAdapter extends RecyclerView.Adapter<MoreImagesAdapter.Mo
         notifyDataSetChanged();
     }
 
-    static class MoreImageViewHolder extends RecyclerView.ViewHolder{
+    static class MoreImageViewHolder extends RecyclerView.ViewHolder {
         private ImageView moreImages;
+
         public MoreImageViewHolder(@NonNull View itemView) {
             super(itemView);
 
             moreImages = itemView.findViewById(R.id.more_image_item_view);
         }
 
-        void bindImage(String url){
+        void bindImage(String url) {
             Picasso.get()
                     .load(ImagePath.movieImagePathBuilder(url))
                     .into(moreImages);
