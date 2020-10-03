@@ -28,3 +28,7 @@ jobs:
             - Second Change
           draft: false
           prerelease: false
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build apk
+         run: ./gradlew assemble
