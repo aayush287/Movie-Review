@@ -82,7 +82,6 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
     private boolean isFavourite = false;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +89,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
 
         Toolbar toolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -124,7 +123,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         mShareButton = findViewById(R.id.share_btn);
 
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-3169980754156809/5467374205");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 
@@ -133,7 +132,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         mSimilarMoviesAdapter = new MovieAdapter(this);
         mTrailerAdapter = new TrailerAdapter(this);
 
-        if (movieDetail != null){
+        if (movieDetail != null) {
             bindViews();
         }
 
@@ -204,7 +203,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         mShareButton.setOnClickListener(v -> {
             startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(this)
                     .setType("text/plain")
-                    .setText("Watch "+movieDetail.getTitle()+" with me.\n #MovieReviewApp")
+                    .setText("Watch " + movieDetail.getTitle() + " with me.\n #MovieReviewApp")
                     .getIntent(), getString(R.string.share_btn_txt)));
             fireBaseLogs("5", movieDetail.getTitle() + " share");
         });
@@ -212,12 +211,12 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
 
     }
 
-    private void checkForFavorite(){
+    private void checkForFavorite() {
         movieDetailViewModel.getMovieById().observe(this, movieModel -> {
-            if (movieModel == null){
-               mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_outline_favorite_border_24));
+            if (movieModel == null) {
+                mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_outline_favorite_border_24));
                 isFavourite = false;
-            }else {
+            } else {
                 mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite_24));
                 isFavourite = true;
             }
@@ -226,7 +225,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
 
     private void setTrailersView() {
         movieDetailViewModel.getTrailerLiveData().observe(this, movieTrailers -> {
-            if (movieTrailers == null || movieTrailers.size() == 0){
+            if (movieTrailers == null || movieTrailers.size() == 0) {
                 TextView trailersTitle = findViewById(R.id.trailers_heading);
                 trailersTitle.setVisibility(View.GONE);
             }
@@ -288,8 +287,8 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
      * This method adds or delete the favorite movie from the database
      * It uses executors to run this task on background thread
      */
-    private void changeFavouriteStatus(){
-        if (isFavourite){
+    private void changeFavouriteStatus() {
+        if (isFavourite) {
             AppExecutors.getInstance().diskIO().execute(() -> {
                 appDatabase.movieDao().deleteMovie(movieDetail);
                 fireBaseLogs("3", movieDetail.getTitle() + " removed to favorite");
@@ -297,7 +296,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
                 isFavourite = false;
                 runOnUiThread(() -> mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_outline_favorite_border_24)));
             });
-        }else {
+        } else {
             AppExecutors.getInstance().diskIO().execute(() -> {
                 appDatabase.movieDao().insertMovie(movieDetail);
                 fireBaseLogs("4", movieDetail.getTitle() + " added to favorite");
@@ -333,10 +332,11 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
 
     /**
      * method to log events of app
-     * @param id id of item
+     *
+     * @param id  id of item
      * @param log string
      */
-    private void fireBaseLogs(String id, String log){
+    private void fireBaseLogs(String id, String log) {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, log);
@@ -344,7 +344,7 @@ public class MovieActivity extends AppCompatActivity implements MovieAdapter.OnM
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
-    private void updateWidgets(){
+    private void updateWidgets() {
         ComponentName componentName = new ComponentName(this, MovieReviewWidget.class);
         int[] ids = AppWidgetManager.getInstance(this).getAppWidgetIds(componentName);
         Intent intent = new Intent(this, MovieReviewWidget.class);

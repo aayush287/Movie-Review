@@ -29,6 +29,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickHandler{
@@ -124,6 +125,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMo
         setTopRatedView();
         setFavoriteMovies();
 
+        // Firebase message Topic subscribe
+        FirebaseMessaging.getInstance().subscribeToTopic("update");
 
     }
     //________________** Setting all views i.e. New release, popular, top rated, fav**_____________
